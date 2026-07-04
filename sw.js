@@ -1,6 +1,6 @@
 /* こころ日和 Service Worker — オフラインでも開けるようにする */
 
-const CACHE = 'kokorobiyori-cache-v4';
+const CACHE = 'kokorobiyori-cache-v5';
 
 const ASSETS = [
   './',

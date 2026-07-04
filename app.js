@@ -321,7 +321,8 @@ function renderCalendar() {
   const daysInMonth = new Date(calY, calM + 1, 0).getDate();
   const t = todayStr();
 
-  for (let i = 0; i < first.getDay(); i++) {
+  const leadingBlanks = (first.getDay() + 6) % 7; // 月曜始まりのオフセット
+  for (let i = 0; i < leadingBlanks; i++) {
     const cell = document.createElement('div');
     cell.className = 'cal-cell empty';
     grid.appendChild(cell);
