@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>こころ日和</title>
+<meta name="description" content="気分・生理周期・日常をまとめて記録できる、じぶんのための手帳アプリ">
+<meta name="theme-color" content="#FFD6E8">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="こころ日和">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="app-header">
+  <span class="header-melorin" id="header-melorin"></span>
+  <h1>こころ日和</h1>
+  <span class="header-ribbon">🎀</span>
+</header>
+
+<main id="main">
+
+  <!-- ============ きょう(記録) ============ -->
+  <section id="tab-record" class="tab active">
+    <div class="date-nav">
+      <button id="date-prev" class="nav-arrow" aria-label="前の日">‹</button>
+      <div id="record-date-label" class="date-label"></div>
+      <button id="date-next" class="nav-arrow" aria-label="次の日">›</button>
+    </div>
+
+    <div class="card">
+      <h2>🌷 きょうのきもち</h2>
+      <div id="mood-picker" class="mood-picker"></div>
+      <div id="mood-label-display" class="mood-label-display">タップしてえらんでね</div>
+      <input id="mood-memo" type="text" maxlength="120" placeholder="ひとことメモ(任意)">
+    </div>
+
+    <div class="card">
+      <h2>🌙 睡眠</h2>
+      <div class="sleep-row">
+        <label class="time-label">ねた時間
+          <input type="time" id="sleep-start">
+        </label>
+        <label class="time-label">おきた時間
+          <input type="time" id="sleep-end">
+        </label>
+      </div>
+      <div id="sleep-duration" class="sleep-duration"></div>
+    </div>
+
+    <div class="card">
+      <h2>💧 生理</h2>
+      <div id="period-status" class="period-status"></div>
+      <div id="period-buttons" class="period-buttons"></div>
+    </div>
+
+    <div class="card">
+      <h2>📖 きょうのできごと</h2>
+      <textarea id="diary" rows="4" placeholder="今日あったこと、気づいたことなど"></textarea>
+    </div>
+
+    <button id="save-btn" class="save-btn">💗 きろくする</button>
+  </section>
+
+  <!-- ============ カレンダー ============ -->
+  <section id="tab-calendar" class="tab">
+    <div class="cal-header">
+      <button id="cal-prev" class="nav-arrow" aria-label="前の月">‹</button>
+      <div id="cal-title" class="cal-title"></div>
+      <button id="cal-next" class="nav-arrow" aria-label="次の月">›</button>
+    </div>
+    <div class="cal-legend">
+      <span><i class="dot" style="background:#FFAFC7"></i>きもち</span>
+      <span>💧 生理</span>
+      <span class="predict-chip">♡ 予測</span>
+      <span>✏️ メモあり</span>
+    </div>
+    <div class="cal-weekdays">
+      <div class="wd sun">日</div><div class="wd">月</div><div class="wd">火</div>
+      <div class="wd">水</div><div class="wd">木</div><div class="wd">金</div><div class="wd sat">土</div>
+    </div>
+    <div id="cal-grid" class="cal-grid"></div>
+    <div id="cal-empty" class="empty-note hidden"></div>
+  </section>
+
+  <!-- ============ グラフ ============ -->
+  <section id="tab-chart" class="tab">
+    <div class="chart-controls">
+      <div class="range-toggle">
+        <button data-range="30" class="active">1ヶ月</button>
+        <button data-range="90">3ヶ月</button>
+      </div>
+      <label class="check-label"><input type="checkbox" id="show-sleep"> 🌙睡眠も重ねる</label>
+    </div>
+    <div class="card chart-card">
+      <div id="chart"></div>
+      <div class="chart-legend">
+        <span><i class="line-sample"></i> きもち</span>
+        <span><i class="band-sample"></i> 生理期間</span>
+        <span><i class="band-sample predict"></i> 予測</span>
+        <span id="legend-sleep" class="hidden"><i class="bar-sample"></i> 睡眠</span>
+      </div>
+    </div>
+    <div id="chart-note" class="empty-note hidden"></div>
+  </section>
+
+  <!-- ============ せってい ============ -->
+  <section id="tab-settings" class="tab">
+    <div class="card">
+      <h2>💧 生理の周期</h2>
+      <div id="cycle-summary" class="cycle-summary"></div>
+      <div id="period-list" class="period-list"></div>
+      <p class="tiny-note">※ 予測は直近の周期の平均から計算した目安です</p>
+    </div>
+
+    <div class="card">
+      <h2>🌷 きもちラベルの編集</h2>
+      <p class="tiny-note">自分がしっくりくる言葉に書きかえられます</p>
+      <div id="mood-label-editor" class="mood-label-editor"></div>
+      <button id="save-labels-btn" class="mini-btn">ラベルをほぞん</button>
+    </div>
+
+    <div class="card">
+      <h2>🎒 バックアップ</h2>
+      <p class="tiny-note">データはこの端末のブラウザにだけ保存されています。機種変更のまえに書き出しておいてね</p>
+      <div class="backup-row">
+        <button id="export-btn" class="mini-btn">📤 保存(書き出し)</button>
+        <label class="mini-btn file-btn">📥 読み込む<input type="file" id="import-file" accept=".json,application/json" hidden></label>
+      </div>
+    </div>
+
+    <div class="card danger-card">
+      <h2>🗑️ データの全削除</h2>
+      <button id="delete-all-btn" class="mini-btn danger-btn">すべての記録を削除する</button>
+    </div>
+
+    <div class="card about-card">
+      <div id="about-melorin"></div>
+      <p><strong>こころ日和</strong> と うさぎの<strong>めろりん</strong>🐰<br>
+      きろくは毎日じゃなくてもだいじょうぶ。<br>できた日はえらい、できない日もえらい💗</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- 下部タブ -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-tab="record"><span class="nav-icon">✏️</span>きょう</button>
+  <button class="nav-btn" data-tab="calendar"><span class="nav-icon">📅</span>カレンダー</button>
+  <button class="nav-btn" data-tab="chart"><span class="nav-icon">📈</span>グラフ</button>
+  <button class="nav-btn" data-tab="settings"><span class="nav-icon">🎀</span>設定</button>
+</nav>
+
+<!-- 日付詳細モーダル -->
+<div id="modal-backdrop" class="modal-backdrop hidden">
+  <div class="modal">
+    <div id="modal-body"></div>
+    <div class="modal-actions">
+      <button id="modal-edit-btn" class="mini-btn">✏️ この日を編集</button>
+      <button id="modal-close-btn" class="mini-btn ghost-btn">とじる</button>
+    </div>
+  </div>
+</div>
+
+<!-- 保存トースト -->
+<div id="toast" class="toast hidden"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
