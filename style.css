@@ -121,8 +121,8 @@ input:focus, textarea:focus{ border-color:var(--pink-main); }
 textarea{ resize:vertical; }
 
 /* ---------------- すいみん ---------------- */
-.sleep-row{ display:flex; gap:10px; flex-wrap:wrap; }
-.time-label{ flex:1; min-width:130px; font-size:.85rem; color:var(--pink-text); font-weight:500; }
+.sleep-row{ display:flex; gap:20px; flex-wrap:wrap; }
+.time-label{ flex:1; min-width:120px; font-size:.85rem; color:var(--pink-text); font-weight:500; }
 .time-label input{ margin-top:4px; }
 .sleep-duration{
   margin-top:10px; text-align:center; font-weight:700; color:var(--pink-deep);
