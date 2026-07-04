@@ -720,6 +720,14 @@ function init() {
   // PWA: Service Worker 登録
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(() => { /* オフライン非対応環境 */ });
+
+    // 新しいService Workerが有効になったら、開き直さなくても最新版を反映する
+    let refreshedOnce = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (refreshedOnce) return;
+      refreshedOnce = true;
+      window.location.reload();
+    });
   }
 }
 
